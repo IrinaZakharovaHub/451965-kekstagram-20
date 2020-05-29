@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Станислав Казанков](https://up.htmlacademy.ru/javascript/20/user/451965).
-* Наставник: `Неизвестно`.
+* Наставник: [Ирина Захарова] (https://htmlacademy.ru/profile/id462703).
 
 ---
 
