@@ -1,7 +1,17 @@
-language: node_js
-
-node_js:
-  - "8.9"
-
-notifications:
-  email: false
+{
+  "language": "node_js",
+  "os": [
+    "windows"
+  ],
+  "dist": "NT 10",
+  "node_js": [
+    "8.9"
+  ],
+  "notifications": {
+    "email": [
+      {
+        "enabled": false
+      }
+    ]
+  }
+}
