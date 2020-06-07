@@ -155,7 +155,7 @@
       fragment.appendChild(createPhotoElement(photos[i]));
     }
 
-    var picturesElement = document.querySelector('#picture');
+    var picturesElement = document.querySelector('.pictures');
 
     picturesElement.appendChild(fragment);
   };
