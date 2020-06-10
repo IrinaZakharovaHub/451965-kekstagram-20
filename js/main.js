@@ -158,7 +158,7 @@
   var createCommentElement = function (comment) {
     var commentElement = commentTemplate.cloneNode(true);
 
-    var avatarElement = commentElement.querySelector('.social__picture')
+    var avatarElement = commentElement.querySelector('.social__picture');
     avatarElement.setAttribute('src', comment.avatar);
     avatarElement.setAttribute('alt', comment.name);
     commentElement.querySelector('.social__text').textContent = comment.message;
