@@ -216,9 +216,10 @@
   var editingForm = document.querySelector('.img-upload__overlay');
 
   var onEditingFormEscPress = function(evt) {
-    evt.preventDefault();
     if (evt.key === 'Escape') {
-      closeEditingForm();
+      if (hashtags !== document.activeElement) {
+        closeEditingForm();
+      }
     }
   }
 
@@ -299,8 +300,13 @@
   var hashtags = editingForm.querySelector('.text__hashtags');
 
   hashtags.addEventListener('input', function(evt) {
+    hashtags.value = hashtags.value.replace(/\s+/g, ' ');
 
-    var hashtagArray = hashtags.value.split(' ');
+    var hashtagArray = hashtags.value.trim().split(' ');
+
+    if (hashtagArray[0] === '') {
+      hashtagArray.pop();
+    }
 
     if (hashtagArray.length > MAX_HASHTAG_COUNT) {
       hashtags.setCustomValidity('Ошибка! Удалите ' + (hashtagArray.length - MAX_HASHTAG_COUNT).toString() + ' хэштега (их должно быть не больше ' + MAX_HASHTAG_COUNT.toString() + ')');
@@ -309,18 +315,28 @@
 
     var regExp = /^#[а-яА-ЯёЁa-zA-Z\d]{1,19}$/;
     var hashtagSet = new Set();
+    var lowerCaseHashtag = '';
 
     for (var i = 0; i < hashtagArray.length; i++) {
-      if (hashtagSet.has(hashtagArray[i].toLowerCase())) {
-        hashtags.setCustomValidity('Ошибка! Хэштег "' + hashtagArray[i] + '" указан более одного раза.');
+      lowerCaseHashtag = hashtagArray[i].toLowerCase();
+
+      if (hashtagSet.has(lowerCaseHashtag)) {
+        hashtags.setCustomValidity('Ошибка! Хэштег "' + lowerCaseHashtag + '" указан более одного раза.');
         return;
       }
       if (!regExp.test(hashtagArray[i])) {
-        hashtags.setCustomValidity('Ошибка! Хэштег должен начинаться с символа #, за которым должны следовать 1 - 19 цифро-буквенных символов.');
+        hashtags.setCustomValidity('Ошибка! Каждый хэштег должен начинаться с символа #, за которым должны следовать 1 - 19 цифро-буквенных символов.');
         return;
       }
-      hashtagSet.add(hashtagArray[i].toLowerCase());
+      hashtagSet.add(lowerCaseHashtag);
     }
     hashtags.setCustomValidity('');
   });
+
+  var uploadBtn = editingForm.querySelector('#upload-submit');
+
+  uploadBtn.addEventListener('click', function (evt) {
+    hashtags.value = hashtags.value.trim();
+  });
+
 })();
