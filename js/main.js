@@ -189,8 +189,6 @@
 
   var bigPhotoElement = document.querySelector('.big-picture');
 
-  //bigPhotoElement.classList.remove('hidden');
-
   var bigPhotoImgElement = bigPhotoElement.querySelector('.big-picture__img img');
 
   bigPhotoImgElement.setAttribute('src', photos[0].url);
@@ -206,43 +204,42 @@
   bigPhotoElement.querySelector('.social__caption').textContent = photos[0].description.toString();
   bigPhotoElement.querySelector('.social__comment-count').classList.add('hidden');
   bigPhotoElement.querySelector('.comments-loader').classList.add('hidden');
- // document.querySelector('body').classList.add('modal-open');
 
-  //module4-task1
+  // module4-task2
 
   var uploadingField = document.querySelector('#upload-file');
   var body = document.querySelector('body');
   var cancelBtn = document.querySelector('#upload-cancel');
   var editingForm = document.querySelector('.img-upload__overlay');
 
-  var onEditingFormEscPress = function(evt) {
+  var onEditingFormEscPress = function (evt) {
     if (evt.key === 'Escape') {
       if (hashtags !== document.activeElement) {
         closeEditingForm();
       }
     }
-  }
+  };
 
-  var openEditingForm = function() {
+  var openEditingForm = function () {
     body.classList.add('modal-open');
     editingForm.classList.remove('hidden');
 
     document.addEventListener('keydown', onEditingFormEscPress);
-  }
+  };
 
-  var closeEditingForm = function() {
+  var closeEditingForm = function () {
     editingForm.classList.add('hidden');
     body.classList.remove('modal-open');
     uploadingField.value = '';
 
     document.removeEventListener('keydown', onEditingFormEscPress);
-  }
+  };
 
-  uploadingField.addEventListener('change', function(evt) {
+  uploadingField.addEventListener('change', function () {
     openEditingForm();
   });
 
-  cancelBtn.addEventListener('click', function(evt) {
+  cancelBtn.addEventListener('click', function () {
     closeEditingForm();
   });
 
@@ -257,7 +254,7 @@
 
   slider.classList.add('hidden');
 
-  var normalizeEffectLevelValue = function(pureEffectLevelValue) {
+  var normalizeEffectLevelValue = function (pureEffectLevelValue) {
     var normalizedEffectLevelValue = pureEffectLevelValue;
     switch (editingForm.querySelector('input[name=effect]:checked').value) {
       case 'chrome':
@@ -270,11 +267,10 @@
       case 'heat':
         normalizedEffectLevelValue *= 3;
     }
-
     return normalizedEffectLevelValue;
-  }
+  };
 
-  effectsFieldset.addEventListener('change', function(evt) {
+  effectsFieldset.addEventListener('change', function () {
     previewImg.classList.remove('effects__preview--' + currentEffectName);
 
     var newEffectName = editingForm.querySelector('input[name=effect]:checked').value.toString();
@@ -292,14 +288,14 @@
     currentEffectName = newEffectName;
   });
 
-  effectLevelPin.addEventListener('mouseup', function (evt) {
+  effectLevelPin.addEventListener('mouseup', function () {
     effectLevelValue.value = effectLevelPin.offsetLeft / effectLevelLine.offsetWidth;
     effectLevelValue.value = normalizeEffectLevelValue(effectLevelValue.value);
   });
 
   var hashtags = editingForm.querySelector('.text__hashtags');
 
-  hashtags.addEventListener('input', function(evt) {
+  hashtags.addEventListener('input', function () {
     hashtags.value = hashtags.value.replace(/\s+/g, ' ');
 
     var hashtagArray = hashtags.value.trim().split(' ');
@@ -314,28 +310,27 @@
     }
 
     var regExp = /^#[а-яА-ЯёЁa-zA-Z\d]{1,19}$/;
-    var hashtagSet = new Set();
-    var lowerCaseHashtag = '';
+    var lowerCaseHashtagI = '';
 
     for (var i = 0; i < hashtagArray.length; i++) {
-      lowerCaseHashtag = hashtagArray[i].toLowerCase();
-
-      if (hashtagSet.has(lowerCaseHashtag)) {
-        hashtags.setCustomValidity('Ошибка! Хэштег "' + lowerCaseHashtag + '" указан более одного раза.');
-        return;
+      lowerCaseHashtagI = hashtagArray[i].toLowerCase();
+      for (var j = i + 1; j < hashtagArray.length; j++) {
+        if (hashtagArray[j].toLowerCase() === lowerCaseHashtagI) {
+          hashtags.setCustomValidity('Ошибка! Хэштег "' + lowerCaseHashtagI + '" указан более одного раза.');
+          return;
+        }
       }
       if (!regExp.test(hashtagArray[i])) {
         hashtags.setCustomValidity('Ошибка! Каждый хэштег должен начинаться с символа #, за которым должны следовать 1 - 19 цифро-буквенных символов.');
         return;
       }
-      hashtagSet.add(lowerCaseHashtag);
     }
     hashtags.setCustomValidity('');
   });
 
   var uploadBtn = editingForm.querySelector('#upload-submit');
 
-  uploadBtn.addEventListener('click', function (evt) {
+  uploadBtn.addEventListener('click', function () {
     hashtags.value = hashtags.value.trim();
   });
 
